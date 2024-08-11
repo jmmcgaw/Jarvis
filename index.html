@@ -3,10 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Project Name</title>
+    <title>My Chat Page</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        #chat-box {
+            background-color: #333;
+            border: 1px solid #555;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            height: 300px;
+            overflow-y: scroll;
+            border-radius: 10px;
+        }
+        #user-input {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: white;
+        }
+        #submit-button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Your Project</h1>
-    <p>This is the beginning of your self-developing application.</p>
+    <h1>Welcome to My Chat Page</h1>
+    <div id="chat-box">
+        <p>Chat will appear here...</p>
+    </div>
+    <input type="text" id="user-input" placeholder="Type your message here...">
+    <button id="submit-button">Send</button>
+
+    <script>
+        document.getElementById("submit-button").addEventListener("click", function() {
+            var userInput = document.getElementById("user-input").value;
+            if(userInput.trim() !== "") {
+                var chatBox = document.getElementById("chat-box");
+                var newMessage = document.createElement("p");
+                newMessage.textContent = "You: " + userInput;
+                chatBox.appendChild(newMessage);
+                document.getElementById("user-input").value = ""; // Clear the input field
+            }
+        });
+    </script>
 </body>
 </html>
