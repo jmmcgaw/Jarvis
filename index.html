@@ -64,25 +64,28 @@
             chatBox.appendChild(newMessage);
             chatBox.scrollTop = chatBox.scrollHeight;  // Auto scroll to the bottom
             document.getElementById("user-input").value = ""; // Clear the input field
-            
-            // Send the message to OpenAI API
-            const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer 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"
-                },
-                body: JSON.stringify({
-                    model: "gpt-4",
-                    messages: [{role: "user", content: userInput}],
-                    max_tokens: 50
-                })
-            });
-            
-            const data = await response.json();
-            const aiMessage = document.createElement("p");
-            aiMessage.textContent = "AI: " + (data.choices[0].message.content.trim() || "Error: No response");
-            chatBox.appendChild(aiMessage);
+
+            // Show loading message
+            const loadingMessage = document.createElement("p");
+            loadingMessage.textContent = "AI: ...";
+            chatBox.appendChild(loadingMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch("http://localhost:3000/api/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                const data = await response.json();
+                loadingMessage.textContent = "AI: " + (data.message || "Error: No response");
+            } catch (error) {
+                loadingMessage.textContent = "AI: Error: " + error.message;
+            }
+
             chatBox.scrollTop = chatBox.scrollHeight;  // Auto scroll to the bottom
         }
     }
